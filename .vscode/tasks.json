@@ -1,0 +1,17 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-project",
+            "type": "shell",
+            "command": "cd ${workspaceFolder}/build && cmake .. && make",
+            "args": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"],
+            "detail": "编译整个 HTTPSERVER 项目"
+        }
+    ]
+}
