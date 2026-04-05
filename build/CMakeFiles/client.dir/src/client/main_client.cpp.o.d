@@ -198,6 +198,7 @@ CMakeFiles/client.dir/src/client/main_client.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h \
  /usr/include/x86_64-linux-gnu/bits/sigthread.h \
  /usr/include/x86_64-linux-gnu/bits/signal_ext.h \
+ /usr/include/c++/11/limits \
  /home/loki/桌面/self_projects/httpserver/src/client/../../include/client/HandlerFactory.h \
  /usr/include/c++/11/memory /usr/include/c++/11/bits/stl_uninitialized.h \
  /usr/include/c++/11/bits/stl_tempbuf.h \
@@ -221,8 +222,8 @@ CMakeFiles/client.dir/src/client/main_client.cpp.o: \
  /usr/include/c++/11/pstl/execution_defs.h /usr/include/c++/11/thread \
  /usr/include/c++/11/bits/std_thread.h \
  /usr/include/c++/11/bits/this_thread_sleep.h /usr/include/c++/11/chrono \
- /usr/include/c++/11/ratio /usr/include/c++/11/limits \
- /usr/include/c++/11/ctime /usr/include/c++/11/bits/parse_numbers.h \
+ /usr/include/c++/11/ratio /usr/include/c++/11/ctime \
+ /usr/include/c++/11/bits/parse_numbers.h \
  /home/loki/桌面/self_projects/httpserver/src/client/../../include/client/HandlerRouter.h \
  /home/loki/桌面/self_projects/httpserver/src/client/../../include/client/../http/HttpResponse.h \
  /home/loki/桌面/self_projects/httpserver/src/client/../../include/client/../http/HttpMessage.h \
@@ -293,5 +294,12 @@ CMakeFiles/client.dir/src/client/main_client.cpp.o: \
  /usr/include/c++/11/bits/stl_numeric.h \
  /usr/include/c++/11/pstl/glue_numeric_defs.h /usr/include/c++/11/any \
  /home/loki/桌面/self_projects/httpserver/src/client/../../include/client/../core/Buffer.h \
+ /usr/include/c++/11/mutex /usr/include/c++/11/bits/std_mutex.h \
+ /usr/include/c++/11/bits/unique_lock.h \
+ /home/loki/桌面/self_projects/httpserver/src/client/../../include/client/../core/ThreadPool.h \
+ /usr/include/c++/11/queue /usr/include/c++/11/deque \
+ /usr/include/c++/11/bits/stl_deque.h /usr/include/c++/11/bits/deque.tcc \
+ /usr/include/c++/11/bits/stl_queue.h \
+ /usr/include/c++/11/condition_variable /usr/include/c++/11/atomic \
  /home/loki/桌面/self_projects/httpserver/src/client/../../include/client/Utils.h \
  /home/loki/桌面/self_projects/httpserver/src/client/../../include/http/HttpRequest.h

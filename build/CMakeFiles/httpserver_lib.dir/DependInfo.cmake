@@ -35,6 +35,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/loki/桌面/self_projects/httpserver/src/http/UploadController.cpp" "CMakeFiles/httpserver_lib.dir/src/http/UploadController.cpp.o" "gcc" "CMakeFiles/httpserver_lib.dir/src/http/UploadController.cpp.o.d"
   "/home/loki/桌面/self_projects/httpserver/src/http/UserManager.cpp" "CMakeFiles/httpserver_lib.dir/src/http/UserManager.cpp.o" "gcc" "CMakeFiles/httpserver_lib.dir/src/http/UserManager.cpp.o.d"
   "/home/loki/桌面/self_projects/httpserver/src/main_echo.cpp" "CMakeFiles/httpserver_lib.dir/src/main_echo.cpp.o" "gcc" "CMakeFiles/httpserver_lib.dir/src/main_echo.cpp.o.d"
+  "/home/loki/桌面/self_projects/httpserver/src/mysql/MySQLClient.cpp" "CMakeFiles/httpserver_lib.dir/src/mysql/MySQLClient.cpp.o" "gcc" "CMakeFiles/httpserver_lib.dir/src/mysql/MySQLClient.cpp.o.d"
   "/home/loki/桌面/self_projects/httpserver/src/redis/RedisClient.cpp" "CMakeFiles/httpserver_lib.dir/src/redis/RedisClient.cpp.o" "gcc" "CMakeFiles/httpserver_lib.dir/src/redis/RedisClient.cpp.o.d"
   )
 

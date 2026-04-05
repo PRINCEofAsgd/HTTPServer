@@ -251,6 +251,17 @@ CMakeFiles/httpserver_lib.dir/src/http/LoginController.cpp.o: \
  /usr/include/hiredis/hiredis.h /usr/include/hiredis/read.h \
  /usr/include/x86_64-linux-gnu/sys/time.h /usr/include/hiredis/sds.h \
  /usr/include/hiredis/alloc.h /usr/include/c++/11/stdlib.h \
+ /home/loki/桌面/self_projects/httpserver/src/http/../../include/http/../mysql/MySQLClient.h \
+ /usr/include/mysql/mysql.h \
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h \
+ /usr/include/mysql/field_types.h /usr/include/mysql/my_list.h \
+ /usr/include/mysql/mysql_com.h /usr/include/mysql/my_command.h \
+ /usr/include/mysql/my_compress.h \
+ /usr/include/mysql/udf_registration_types.h \
+ /usr/include/mysql/client_plugin.h \
+ /usr/include/mysql/plugin_auth_common.h \
+ /usr/include/mysql/mysql_version.h /usr/include/mysql/mysql_time.h \
+ /usr/include/mysql/errmsg.h \
  /home/loki/桌面/self_projects/httpserver/src/http/../../include/http/TokenManager.h \
  /home/loki/桌面/self_projects/httpserver/src/http/../../third_party/nlohmann/json.hpp \
  /usr/include/c++/11/iostream

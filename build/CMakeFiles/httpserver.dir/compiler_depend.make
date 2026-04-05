@@ -365,9 +365,8 @@ CMakeFiles/httpserver.dir/src/main_http.cpp.o: ../src/main_http.cpp \
   ../include/http/HttpResponse.h \
   ../include/http/HttpRouter.h \
   ../include/http/DownloadController.h \
-  ../include/http/UploadController.h \
-  ../include/http/StaticFileController.h \
-  ../include/http/UserManager.h \
+  ../include/http/AuthorMiddleWare.h \
+  ../include/http/TokenManager.h \
   ../include/redis/RedisClient.h \
   /usr/include/hiredis/hiredis.h \
   /usr/include/hiredis/read.h \
@@ -375,10 +374,25 @@ CMakeFiles/httpserver.dir/src/main_http.cpp.o: ../src/main_http.cpp \
   /usr/include/hiredis/sds.h \
   /usr/include/hiredis/alloc.h \
   /usr/include/c++/11/stdlib.h \
+  ../include/http/UploadController.h \
+  ../include/http/StaticFileController.h \
+  ../include/http/UserManager.h \
+  ../include/mysql/MySQLClient.h \
+  /usr/include/mysql/mysql.h \
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h \
+  /usr/include/mysql/field_types.h \
+  /usr/include/mysql/my_list.h \
+  /usr/include/mysql/mysql_com.h \
+  /usr/include/mysql/my_command.h \
+  /usr/include/mysql/my_compress.h \
+  /usr/include/mysql/udf_registration_types.h \
+  /usr/include/mysql/client_plugin.h \
+  /usr/include/mysql/plugin_auth_common.h \
+  /usr/include/mysql/mysql_version.h \
+  /usr/include/mysql/mysql_time.h \
+  /usr/include/mysql/errmsg.h \
   ../include/http/RegisterController.h \
-  ../include/http/TokenManager.h \
   ../include/http/LoginController.h \
-  ../include/http/AuthorMiddleWare.h \
   /usr/include/c++/11/csignal \
   /usr/include/signal.h \
   /usr/include/x86_64-linux-gnu/bits/signum-generic.h \
@@ -420,8 +434,6 @@ CMakeFiles/httpserver.dir/src/main_http.cpp.o: ../src/main_http.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/sigevent-consts.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/sigval_t.h:
-
 /usr/include/x86_64-linux-gnu/bits/siginfo-consts.h:
 
 /usr/include/x86_64-linux-gnu/bits/siginfo-arch.h:
@@ -430,7 +442,25 @@ CMakeFiles/httpserver.dir/src/main_http.cpp.o: ../src/main_http.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/types/sig_atomic_t.h:
 
-../include/http/AuthorMiddleWare.h:
+/usr/include/x86_64-linux-gnu/bits/types/sigval_t.h:
+
+/usr/include/mysql/errmsg.h:
+
+/usr/include/mysql/mysql_time.h:
+
+/usr/include/mysql/plugin_auth_common.h:
+
+/usr/include/mysql/my_compress.h:
+
+/usr/include/mysql/my_command.h:
+
+/usr/include/mysql/mysql_com.h:
+
+/usr/include/mysql/field_types.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h:
+
+../include/http/UserManager.h:
 
 /usr/include/c++/11/stdlib.h:
 
@@ -442,7 +472,7 @@ CMakeFiles/httpserver.dir/src/main_http.cpp.o: ../src/main_http.cpp \
 
 ../include/redis/RedisClient.h:
 
-../include/http/UserManager.h:
+../include/http/AuthorMiddleWare.h:
 
 ../include/http/DownloadController.h:
 
@@ -507,6 +537,8 @@ CMakeFiles/httpserver.dir/src/main_http.cpp.o: ../src/main_http.cpp \
 /usr/include/c++/11/tr1/poly_hermite.tcc:
 
 /usr/include/c++/11/tr1/modified_bessel_func.tcc:
+
+../include/mysql/MySQLClient.h:
 
 /usr/include/c++/11/tr1/hypergeometric.tcc:
 
@@ -598,6 +630,8 @@ CMakeFiles/httpserver.dir/src/main_http.cpp.o: ../src/main_http.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/wctype-wchar.h:
 
+/usr/include/mysql/my_list.h:
+
 /usr/include/x86_64-linux-gnu/bits/waitflags.h:
 
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
@@ -669,6 +703,8 @@ CMakeFiles/httpserver.dir/src/main_http.cpp.o: ../src/main_http.cpp \
 /usr/include/c++/11/tuple:
 
 /usr/include/c++/11/bits/stl_tree.h:
+
+/usr/include/mysql/mysql.h:
 
 /usr/include/x86_64-linux-gnu/bits/fp-fast.h:
 
@@ -747,6 +783,8 @@ CMakeFiles/httpserver.dir/src/main_http.cpp.o: ../src/main_http.cpp \
 /usr/include/c++/11/bits/stl_tempbuf.h:
 
 /usr/include/c++/11/bits/std_function.h:
+
+/usr/include/mysql/client_plugin.h:
 
 /usr/include/c++/11/cmath:
 
@@ -1088,6 +1126,8 @@ CMakeFiles/httpserver.dir/src/main_http.cpp.o: ../src/main_http.cpp \
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/ctype_base.h:
 
+/usr/include/mysql/mysql_version.h:
+
 /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
 
 /usr/include/asm-generic/errno.h:
@@ -1171,6 +1211,8 @@ CMakeFiles/httpserver.dir/src/main_http.cpp.o: ../src/main_http.cpp \
 /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
 
 /usr/include/c++/11/bits/locale_facets.tcc:
+
+/usr/include/mysql/udf_registration_types.h:
 
 /usr/include/c++/11/bits/codecvt.h:
 

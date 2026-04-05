@@ -1059,6 +1059,30 @@ src/main_http.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/httpserver.dir/build.make CMakeFiles/httpserver.dir/src/main_http.cpp.s
 .PHONY : src/main_http.cpp.s
 
+src/mysql/MySQLClient.o: src/mysql/MySQLClient.cpp.o
+.PHONY : src/mysql/MySQLClient.o
+
+# target to build an object file
+src/mysql/MySQLClient.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/httpserver_lib.dir/build.make CMakeFiles/httpserver_lib.dir/src/mysql/MySQLClient.cpp.o
+.PHONY : src/mysql/MySQLClient.cpp.o
+
+src/mysql/MySQLClient.i: src/mysql/MySQLClient.cpp.i
+.PHONY : src/mysql/MySQLClient.i
+
+# target to preprocess a source file
+src/mysql/MySQLClient.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/httpserver_lib.dir/build.make CMakeFiles/httpserver_lib.dir/src/mysql/MySQLClient.cpp.i
+.PHONY : src/mysql/MySQLClient.cpp.i
+
+src/mysql/MySQLClient.s: src/mysql/MySQLClient.cpp.s
+.PHONY : src/mysql/MySQLClient.s
+
+# target to generate assembly for a file
+src/mysql/MySQLClient.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/httpserver_lib.dir/build.make CMakeFiles/httpserver_lib.dir/src/mysql/MySQLClient.cpp.s
+.PHONY : src/mysql/MySQLClient.cpp.s
+
 src/redis/RedisClient.o: src/redis/RedisClient.cpp.o
 .PHONY : src/redis/RedisClient.o
 
@@ -1206,6 +1230,9 @@ help:
 	@echo "... src/main_http.o"
 	@echo "... src/main_http.i"
 	@echo "... src/main_http.s"
+	@echo "... src/mysql/MySQLClient.o"
+	@echo "... src/mysql/MySQLClient.i"
+	@echo "... src/mysql/MySQLClient.s"
 	@echo "... src/redis/RedisClient.o"
 	@echo "... src/redis/RedisClient.i"
 	@echo "... src/redis/RedisClient.s"

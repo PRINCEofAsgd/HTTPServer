@@ -447,10 +447,24 @@ CMakeFiles/httpserver_lib.dir/src/main_echo.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/httpserver_lib.dir/src/main_echo.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/loki/桌面/self_projects/httpserver/src/main_echo.cpp -o CMakeFiles/httpserver_lib.dir/src/main_echo.cpp.s
 
+CMakeFiles/httpserver_lib.dir/src/mysql/MySQLClient.cpp.o: CMakeFiles/httpserver_lib.dir/flags.make
+CMakeFiles/httpserver_lib.dir/src/mysql/MySQLClient.cpp.o: ../src/mysql/MySQLClient.cpp
+CMakeFiles/httpserver_lib.dir/src/mysql/MySQLClient.cpp.o: CMakeFiles/httpserver_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/loki/桌面/self_projects/httpserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/httpserver_lib.dir/src/mysql/MySQLClient.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/httpserver_lib.dir/src/mysql/MySQLClient.cpp.o -MF CMakeFiles/httpserver_lib.dir/src/mysql/MySQLClient.cpp.o.d -o CMakeFiles/httpserver_lib.dir/src/mysql/MySQLClient.cpp.o -c /home/loki/桌面/self_projects/httpserver/src/mysql/MySQLClient.cpp
+
+CMakeFiles/httpserver_lib.dir/src/mysql/MySQLClient.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/httpserver_lib.dir/src/mysql/MySQLClient.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/loki/桌面/self_projects/httpserver/src/mysql/MySQLClient.cpp > CMakeFiles/httpserver_lib.dir/src/mysql/MySQLClient.cpp.i
+
+CMakeFiles/httpserver_lib.dir/src/mysql/MySQLClient.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/httpserver_lib.dir/src/mysql/MySQLClient.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/loki/桌面/self_projects/httpserver/src/mysql/MySQLClient.cpp -o CMakeFiles/httpserver_lib.dir/src/mysql/MySQLClient.cpp.s
+
 CMakeFiles/httpserver_lib.dir/src/redis/RedisClient.cpp.o: CMakeFiles/httpserver_lib.dir/flags.make
 CMakeFiles/httpserver_lib.dir/src/redis/RedisClient.cpp.o: ../src/redis/RedisClient.cpp
 CMakeFiles/httpserver_lib.dir/src/redis/RedisClient.cpp.o: CMakeFiles/httpserver_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/loki/桌面/self_projects/httpserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/httpserver_lib.dir/src/redis/RedisClient.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/loki/桌面/self_projects/httpserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/httpserver_lib.dir/src/redis/RedisClient.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/httpserver_lib.dir/src/redis/RedisClient.cpp.o -MF CMakeFiles/httpserver_lib.dir/src/redis/RedisClient.cpp.o.d -o CMakeFiles/httpserver_lib.dir/src/redis/RedisClient.cpp.o -c /home/loki/桌面/self_projects/httpserver/src/redis/RedisClient.cpp
 
 CMakeFiles/httpserver_lib.dir/src/redis/RedisClient.cpp.i: cmake_force
@@ -490,6 +504,7 @@ httpserver_lib_OBJECTS = \
 "CMakeFiles/httpserver_lib.dir/src/http/UploadController.cpp.o" \
 "CMakeFiles/httpserver_lib.dir/src/http/UserManager.cpp.o" \
 "CMakeFiles/httpserver_lib.dir/src/main_echo.cpp.o" \
+"CMakeFiles/httpserver_lib.dir/src/mysql/MySQLClient.cpp.o" \
 "CMakeFiles/httpserver_lib.dir/src/redis/RedisClient.cpp.o"
 
 # External object files for target httpserver_lib
@@ -522,10 +537,11 @@ libhttpserver_lib.a: CMakeFiles/httpserver_lib.dir/src/http/TokenManager.cpp.o
 libhttpserver_lib.a: CMakeFiles/httpserver_lib.dir/src/http/UploadController.cpp.o
 libhttpserver_lib.a: CMakeFiles/httpserver_lib.dir/src/http/UserManager.cpp.o
 libhttpserver_lib.a: CMakeFiles/httpserver_lib.dir/src/main_echo.cpp.o
+libhttpserver_lib.a: CMakeFiles/httpserver_lib.dir/src/mysql/MySQLClient.cpp.o
 libhttpserver_lib.a: CMakeFiles/httpserver_lib.dir/src/redis/RedisClient.cpp.o
 libhttpserver_lib.a: CMakeFiles/httpserver_lib.dir/build.make
 libhttpserver_lib.a: CMakeFiles/httpserver_lib.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/loki/桌面/self_projects/httpserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Linking CXX static library libhttpserver_lib.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/loki/桌面/self_projects/httpserver/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Linking CXX static library libhttpserver_lib.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/httpserver_lib.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/httpserver_lib.dir/link.txt --verbose=$(VERBOSE)
 

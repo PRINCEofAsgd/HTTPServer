@@ -294,17 +294,28 @@ CMakeFiles/httpserver_lib.dir/src/http/HttpServer.cpp.o: \
  /home/loki/桌面/self_projects/httpserver/src/http/../../include/http/HttpResponse.h \
  /home/loki/桌面/self_projects/httpserver/src/http/../../include/http/HttpRouter.h \
  /home/loki/桌面/self_projects/httpserver/src/http/../../include/http/DownloadController.h \
- /home/loki/桌面/self_projects/httpserver/src/http/../../include/http/UploadController.h \
- /home/loki/桌面/self_projects/httpserver/src/http/../../include/http/StaticFileController.h \
- /home/loki/桌面/self_projects/httpserver/src/http/../../include/http/UserManager.h \
+ /home/loki/桌面/self_projects/httpserver/src/http/../../include/http/AuthorMiddleWare.h \
+ /home/loki/桌面/self_projects/httpserver/src/http/../../include/http/TokenManager.h \
  /home/loki/桌面/self_projects/httpserver/src/http/../../include/http/../redis/RedisClient.h \
  /usr/include/hiredis/hiredis.h /usr/include/hiredis/read.h \
  /usr/include/x86_64-linux-gnu/sys/time.h /usr/include/hiredis/sds.h \
  /usr/include/hiredis/alloc.h /usr/include/c++/11/stdlib.h \
+ /home/loki/桌面/self_projects/httpserver/src/http/../../include/http/UploadController.h \
+ /home/loki/桌面/self_projects/httpserver/src/http/../../include/http/StaticFileController.h \
+ /home/loki/桌面/self_projects/httpserver/src/http/../../include/http/UserManager.h \
+ /home/loki/桌面/self_projects/httpserver/src/http/../../include/http/../mysql/MySQLClient.h \
+ /usr/include/mysql/mysql.h \
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h \
+ /usr/include/mysql/field_types.h /usr/include/mysql/my_list.h \
+ /usr/include/mysql/mysql_com.h /usr/include/mysql/my_command.h \
+ /usr/include/mysql/my_compress.h \
+ /usr/include/mysql/udf_registration_types.h \
+ /usr/include/mysql/client_plugin.h \
+ /usr/include/mysql/plugin_auth_common.h \
+ /usr/include/mysql/mysql_version.h /usr/include/mysql/mysql_time.h \
+ /usr/include/mysql/errmsg.h \
  /home/loki/桌面/self_projects/httpserver/src/http/../../include/http/RegisterController.h \
- /home/loki/桌面/self_projects/httpserver/src/http/../../include/http/TokenManager.h \
  /home/loki/桌面/self_projects/httpserver/src/http/../../include/http/LoginController.h \
- /home/loki/桌面/self_projects/httpserver/src/http/../../include/http/AuthorMiddleWare.h \
  /home/loki/桌面/self_projects/httpserver/src/http/../../third_party/nlohmann/json.hpp \
  /usr/include/x86_64-linux-gnu/sys/syscall.h \
  /usr/include/x86_64-linux-gnu/asm/unistd.h \

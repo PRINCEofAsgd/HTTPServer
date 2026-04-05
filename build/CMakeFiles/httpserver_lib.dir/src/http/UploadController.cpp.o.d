@@ -246,6 +246,12 @@ CMakeFiles/httpserver_lib.dir/src/http/UploadController.cpp.o: \
  /usr/include/c++/11/bits/stl_numeric.h \
  /usr/include/c++/11/pstl/glue_numeric_defs.h /usr/include/c++/11/any \
  /home/loki/桌面/self_projects/httpserver/src/http/../../include/http/HttpResponse.h \
+ /home/loki/桌面/self_projects/httpserver/src/http/../../include/http/AuthorMiddleWare.h \
+ /home/loki/桌面/self_projects/httpserver/src/http/../../include/http/TokenManager.h \
+ /home/loki/桌面/self_projects/httpserver/src/http/../../include/http/../redis/RedisClient.h \
+ /usr/include/hiredis/hiredis.h /usr/include/hiredis/read.h \
+ /usr/include/x86_64-linux-gnu/sys/time.h /usr/include/hiredis/sds.h \
+ /usr/include/hiredis/alloc.h /usr/include/c++/11/stdlib.h \
  /usr/include/c++/11/fstream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
@@ -264,4 +270,5 @@ CMakeFiles/httpserver_lib.dir/src/http/UploadController.cpp.o: \
  /usr/include/asm-generic/posix_types.h \
  /usr/include/x86_64-linux-gnu/bits/statx-generic.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_statx_timestamp.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_statx.h
+ /usr/include/x86_64-linux-gnu/bits/types/struct_statx.h \
+ /home/loki/桌面/self_projects/httpserver/src/http/../../third_party/nlohmann/json.hpp

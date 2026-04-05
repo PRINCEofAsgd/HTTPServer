@@ -246,6 +246,8 @@ CMakeFiles/client.dir/src/client/HandlerRouter.cpp.o: \
  /usr/include/c++/11/bits/stl_numeric.h \
  /usr/include/c++/11/pstl/glue_numeric_defs.h /usr/include/c++/11/any \
  /home/loki/桌面/self_projects/httpserver/src/client/../../include/client/../core/Buffer.h \
+ /usr/include/c++/11/mutex /usr/include/c++/11/bits/std_mutex.h \
+ /usr/include/c++/11/bits/unique_lock.h \
  /home/loki/桌面/self_projects/httpserver/src/client/../../include/http/HttpContext.h \
  /home/loki/桌面/self_projects/httpserver/src/client/../../include/http/HttpRequest.h \
  /home/loki/桌面/self_projects/httpserver/src/client/../../include/core/SendTask.h \

@@ -1,1 +1,1 @@
-/usr/bin/c++  -Wall CMakeFiles/echoserver.dir/src/main_echo.cpp.o -o ../bin/echoserver  libhttpserver_lib.a -lpthread -lhiredis 
+/usr/bin/c++  -Wall CMakeFiles/echoserver.dir/src/main_echo.cpp.o -o ../bin/echoserver  libhttpserver_lib.a -lpthread -lhiredis -lmysqlclient 

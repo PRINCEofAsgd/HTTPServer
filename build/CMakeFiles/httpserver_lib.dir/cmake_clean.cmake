@@ -53,6 +53,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/httpserver_lib.dir/src/http/UserManager.cpp.o.d"
   "CMakeFiles/httpserver_lib.dir/src/main_echo.cpp.o"
   "CMakeFiles/httpserver_lib.dir/src/main_echo.cpp.o.d"
+  "CMakeFiles/httpserver_lib.dir/src/mysql/MySQLClient.cpp.o"
+  "CMakeFiles/httpserver_lib.dir/src/mysql/MySQLClient.cpp.o.d"
   "CMakeFiles/httpserver_lib.dir/src/redis/RedisClient.cpp.o"
   "CMakeFiles/httpserver_lib.dir/src/redis/RedisClient.cpp.o.d"
   "libhttpserver_lib.a"
