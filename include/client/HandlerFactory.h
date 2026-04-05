@@ -3,6 +3,7 @@
 #include <memory>
 #include <thread>
 #include "HandlerRouter.h"
+#include "../core/ThreadPool.h"
 
 class ClientConn;
 using spClientConn = std::shared_ptr<ClientConn>;
@@ -24,6 +25,7 @@ private:
     std::thread handler_thread_;
     std::unique_ptr<HttpContext> context_;      // HTTP上下文，用于解析响应
     std::unique_ptr<HandlerRouter> router_;     // 路由分发器，用于处理响应
+    std::unique_ptr<ThreadPool> threadpool_;    // 线程池，用于异步处理响应
     
     // Handler成员变量
     std::unique_ptr<JsonHandler> jsonHandler_;      // JSON响应处理器

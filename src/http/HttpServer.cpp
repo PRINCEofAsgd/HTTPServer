@@ -9,16 +9,6 @@
 
 using json = nlohmann::json;
 
-// 从请求中提取X-Request-ID字段的值
-std::string getXRequestIdFromRequest(const HttpRequest& request) {
-    // 从请求头中提取X-Request-ID字段
-    const auto& headers = request.getHeaders();
-    auto it = headers.find("X-Request-ID");
-    if (it != headers.end()) return it->second;
-    // 如果请求中没有X-Request-ID字段，返回一个默认值
-    return "default-request-id";
-}
-
 HttpServer::HttpServer(TcpServer* tcpserver, int threadnum_comp) : tcpserver_(tcpserver), threadpool_(threadnum_comp, "COMP") {
     // 设置 TcpServer 不同通讯事件回调函数，事件有对应的业务可回调本层业务层处理，没有则注释掉业务即可忽略事件、不回调
     tcpserver_->set_newconncallback([this](spConnection conn) { this->handle_newconn(conn); });
@@ -29,78 +19,49 @@ HttpServer::HttpServer(TcpServer* tcpserver, int threadnum_comp) : tcpserver_(tc
     tcpserver_->set_sendcallback([this](spConnection conn) { this->handle_send (conn); });
     // tcpserver_->set_eptimeoutcallback([this](EventLoop* loop) { this->handle_eptimeout(loop); });
     
-    // 初始化UserManager和RegisterController
-    userManager_ = new UserManager("/home/loki/桌面/self_projects/httpserver/users.json");
-    registerController_ = new RegisterController(userManager_, "/home/loki/桌面/HttpStaticFiles");
-    
-    // 初始化RedisClient
+    // 初始化 RedisClient 和 MySQLClient
     redisClient_ = new RedisClient();
-    redisClient_->connect(); // 连接到默认的Redis服务器
+    redisClient_->connect(); 
+    mysqlClient_ = new MySQLClient();
+    mysqlClient_->connect(); 
     
-    // 初始化 TokenManager, LoginController, AuthorMiddleWare
+    // 初始化 TokenManager, UserManager
     tokenManager_ = new TokenManager(redisClient_);
-    loginController_ = new LoginController(userManager_, tokenManager_);
-    authorMiddleWare_ = new AuthorMiddleWare(tokenManager_);
+    userManager_ = new UserManager(redisClient_, mysqlClient_);
     
-    // 注册心跳检测路由
+    // 初始化 RegisterController, LoginController, AuthorMiddleWare
+    authorMiddleWare_ = new AuthorMiddleWare(tokenManager_);
+    registerController_ = new RegisterController(userManager_, "/home/loki/桌面/HttpStaticFiles");
+    loginController_ = new LoginController(userManager_, tokenManager_);
+    
+    // 初始化 DownloadController, UploadController
+    downloadController_ = new DownloadController(authorMiddleWare_);
+    uploadController_ = new UploadController(authorMiddleWare_);
+    
+    // 注册路由
     router_.registerRoute("GET", "/heartbeat", [](const HttpRequest& request) { 
         HttpResponse response(200);
         response.addHeader("Content-Type", "text/plain");
         response.setBody("OK");
         return response;
     });
-
-    // 注册注册/登录路由
-    router_.registerRoute("POST", "/register", [this](const HttpRequest& request) { 
-        return registerController_->handleRegister(request);
-    });
-    router_.registerRoute("POST", "/login", [this](const HttpRequest& request) { 
-        return loginController_->handleLogin(request);
-    });
-
-    // 注册静态资源处理路由
-    router_.registerRoute("GET", "/", [this](const HttpRequest& request) { 
-        return staticFileController_.handleStaticFile(request);
-    });
-    
-    // 注册文件下载/上传路由
-    router_.registerRoute("GET", "/download", [this](const HttpRequest& request) { 
-        // 验证Token并获取用户名
-        std::string username;
-        if (!authorMiddleWare_->verifyToken(request, username)) {
-            HttpResponse response(401);
-            response.addHeader("Content-Type", "application/json");
-            json respBody;
-            respBody["message"] = "Invalid or expired token";
-            response.setBody(respBody.dump());
-            return response;
-        }
-        // 调用下载控制器，传入用户名
-        return downloadController_.handleFileDownload(request, username);
-    });
-    router_.registerRoute("POST", "/upload", [this](const HttpRequest& request) { 
-        // 验证Token并获取用户名
-        std::string username;
-        if (!authorMiddleWare_->verifyToken(request, username)) {
-            HttpResponse response(401);
-            response.addHeader("Content-Type", "application/json");
-            json respBody;
-            respBody["message"] = "Invalid or expired token";
-            response.setBody(respBody.dump());
-            return response;
-        }
-        // 调用上传控制器，传入用户名
-        return uploadController_.handleFileUpload(request, username);
-    });
+    router_.registerRoute("POST", "/register", [this](const HttpRequest& request) { return registerController_->handleRegister(request); });
+    router_.registerRoute("POST", "/login", [this](const HttpRequest& request) { return loginController_->handleLogin(request); });
+    router_.registerRoute("GET", "/", [this](const HttpRequest& request) { return staticFileController_.handleStaticFile(request); });
+    router_.registerRoute("GET", "/download", [this](const HttpRequest& request) { return downloadController_->handleFileDownload(request); });
+    router_.registerRoute("POST", "/upload", [this](const HttpRequest& request) { return uploadController_->handleFileUpload(request); });
 }
 
 HttpServer::~HttpServer() {
-    delete registerController_;
-    delete userManager_;
-    delete tokenManager_;
-    delete loginController_;
-    delete authorMiddleWare_;
     delete redisClient_;
+    delete mysqlClient_;
+    delete tokenManager_;
+    delete userManager_;
+    delete authorMiddleWare_;
+    delete loginController_;
+    delete registerController_;
+    delete downloadController_;
+    delete uploadController_;
 }
 void HttpServer::start() { tcpserver_->start(); }
 void HttpServer::stop() {
@@ -117,7 +78,7 @@ void HttpServer::handle_eptimeout(EventLoop* loop) { printf("epoll_wait() out of
 
 void HttpServer::handle_recv(spConnection conn, std::shared_ptr<std::string> message) {
     printf("receive message(fd = %d) success in IO thread %ld.\n", conn->get_fd(), syscall(SYS_gettid));
-    threadpool_.addtask([this, conn, message]() { this->handle_comp(conn, message); }); // 将HTTP报文解析任务提交到计算线程池
+    threadpool_.addtask([this, conn, message]() { this->handle_comp(conn, message); }); // 将 HTTP 报文解析任务提交到计算线程池
 }
 
 void HttpServer::handle_comp(spConnection conn, std::shared_ptr<std::string> message) {
@@ -135,7 +96,7 @@ void HttpServer::handle_comp(spConnection conn, std::shared_ptr<std::string> mes
         HttpResponse response = router_.handleRequest(request); // 使用 HttpRouter 处理解析好的 HttpRequest 对象，构造 HttpResponse 对象
         
         // 添加X-Request字段，使用与请求相同的X-Request-ID值
-        std::string xRequestId = getXRequestIdFromRequest(request);
+        std::string xRequestId = request.getXRequestId();
         response.addHeader("X-Request-ID", xRequestId);
         
         // 根据请求的 Connection 头设置 Connection 的 keep-alive 状态，默认添加 keep-alive 头

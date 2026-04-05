@@ -37,32 +37,37 @@ void HandlerRouter::printResponseMetadata(const HttpResponse& response) {
 }
 
 // 注册基于请求 ID 的路由
-void HandlerRouter::RegisterRouter(int requestId, const RequestContext& context) { routeMap[requestId] = context; }
+void HandlerRouter::RegisterRouter(int requestId, const RequestContext& context) {
+    std::lock_guard<std::mutex> lock(routeMapMutex);
+    routeMap[requestId] = context;
+}
 
 // 处理响应
 void HandlerRouter::handleResponse(const HttpResponse& response) {
     // 首先调用 printResponseMetadata 方法输出响应报文元数据
     printResponseMetadata(response);
     
-    // 从响应头中提取X-Request-ID字段
-    const auto& headers = response.getHeaders();
-    auto it = headers.find("X-Request-ID");
+    // 从响应头中提取 X-Request-ID 字段
+    std::string xRequestId = response.getXRequestId();
     
-    if (it != headers.end()) {
+    if (xRequestId != "default-request-id") {
         try {
-            int requestId = std::stoi(it->second);
-            // 根据X-Request-ID查找对应的RequestContext
+            int requestId = std::stoi(xRequestId);
+            // 根据 X-Request-ID 查找对应的 RequestContext
+            std::unique_lock<std::mutex> lock(routeMapMutex);
             auto ctxIt = routeMap.find(requestId);
             if (ctxIt != routeMap.end()) {
-                ctxIt->second.callback(response); // 执行回调函数
+                auto callback = ctxIt->second.callback;
                 routeMap.erase(ctxIt);  // 执行完后从路由映射表中移除
+                lock.unlock();      // 提前释放锁，避免在回调中持有锁
+                callback(response); // 执行回调函数
             } 
-            else printf("\n未找到对应的请求ID: %d\n", requestId);
+            else printf("\n未找到对应的请求 ID: %d\n", requestId);
         } catch (const std::invalid_argument& e) {
-            printf("\n无效的X-Request-ID格式\n");
+            printf("\n无效的 X-Request-ID 格式\n");
         } catch (const std::out_of_range& e) {
-            printf("\nX-Request-ID值超出范围\n");
+            printf("\nX-Request-ID 值超出范围\n");
         }
     } 
-    else printf("\n响应头中未找到X-Request-ID字段\n");
+    else printf("\n响应头中未找到 X-Request-ID 字段\n");
 }

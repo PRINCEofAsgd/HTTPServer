@@ -22,20 +22,19 @@ bool RegisterController::createDirectory(const std::string& dirPath) {
             size_t pos = dirPath.find_last_of('/');
             if (pos != std::string::npos) {
                 std::string parentDir = dirPath.substr(0, pos);
-                if (!createDirectory(parentDir)) {
-                    return false;
-                }
+                // 递归创建父目录
+                if (!createDirectory(parentDir)) return false;
                 // 再次尝试创建目录
                 if (mkdir(dirPath.c_str(), 0755) != 0) {
                     std::cerr << "创建目录失败: " << dirPath << ", 错误: " << strerror(errno) << std::endl;
                     return false;
                 }
-            } else {
-                return false;
-            }
+            } 
+            else return false;
         }
-    } else if (!S_ISDIR(statBuf.st_mode)) {
-        // 路径存在但不是目录
+    } 
+    // 目录存在，检查是否为目录
+    else if (!S_ISDIR(statBuf.st_mode)) { // 如果不是目录
         std::cerr << "路径已存在但不是目录: " << dirPath << std::endl;
         return false;
     }
@@ -84,11 +83,19 @@ HttpResponse RegisterController::handleRegister(const HttpRequest& request) {
         return response;
     }
 
-    // 添加用户
-    if (!userManager_->addUser(username, password)) {
+    // 添加用户到 Redis
+    if (!userManager_->addtempUser(username, password)) {
         HttpResponse response(500);
         response.addHeader("Content-Type", "application/json");
-        response.setBody(R"({"error": "Failed to save user information"})");
+        response.setBody(R"({"error": "Failed to save user information to Redis"})");
+        return response;
+    }
+    
+    // 添加用户到 MySQL
+    if (!userManager_->registerUser(username, password)) {
+        HttpResponse response(500);
+        response.addHeader("Content-Type", "application/json");
+        response.setBody(R"({"error": "Failed to save user information to MySQL"})");
         return response;
     }
 

@@ -99,3 +99,12 @@ std::string HttpMessage::getToken() const {
     // 提取Token
     return authHeader.substr(7);
 }
+
+// 从请求中提取X-Request-ID字段的值
+std::string HttpMessage::getXRequestId() const {
+    // 从请求头中提取X-Request-ID字段
+    auto it = headers_.find("X-Request-ID");
+    if (it != headers_.end()) return it->second;
+    // 如果请求中没有X-Request-ID字段，返回一个默认值
+    return "default-request-id";
+}

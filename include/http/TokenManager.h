@@ -11,7 +11,8 @@ public:
     TokenManager(RedisClient* redis);
     ~TokenManager();
 
-    std::string generateToken(const std::string& username); // 生成32位随机Token并存储到Redis
-    bool verifyToken(const std::string& token, std::string& username); // 验证Token并获取用户名
-    bool deleteToken(const std::string& token); // 删除指定Token
+    std::string generateToken(const std::string& username);                 // 生成 32 位随机 Token 并存储到 Redis
+    bool verifyToken(const std::string& token, std::string& username);      // 验证 Token 并获取用户名
+    bool verifyUsername(const std::string& username, std::string& token);   // 验证用户名并获取 Token
+    bool deleteToken(const std::string& token);                             // 删除指定 Token 
 };

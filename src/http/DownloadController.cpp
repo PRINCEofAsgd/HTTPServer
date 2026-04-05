@@ -3,8 +3,11 @@
 #include <sstream>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include "../../third_party/nlohmann/json.hpp"
 
-DownloadController::DownloadController() {}
+using json = nlohmann::json;
+
+DownloadController::DownloadController(AuthorMiddleWare* authorMiddleWare) : authorMiddleWare_(authorMiddleWare) {}
 DownloadController::~DownloadController() {}
 
 // 验证路径，防止路径遍历攻击
@@ -17,17 +20,20 @@ bool DownloadController::validatePath(const std::string& path) {
     return true;
 }
 
-HttpResponse DownloadController::handleFileDownload(const HttpRequest& request, const std::string& username) {
-    // 获取查询参数
-    std::unordered_map<std::string, std::string> params = request.getQueryParameters();
-    
-    // 验证用户名
-    if (username.empty()) {
-        HttpResponse response(400);
-        response.addHeader("Content-Type", "text/html");
-        response.setBody("<html><body><h1>400 Bad Request</h1><p>缺少用户名</p></body></html>");
+HttpResponse DownloadController::handleFileDownload(const HttpRequest& request) {
+    // 验证Token并获取用户名
+    std::string username;
+    if (!authorMiddleWare_->verifyToken(request, username)) {
+        HttpResponse response(401);
+        response.addHeader("Content-Type", "application/json");
+        json respBody;
+        respBody["message"] = "Invalid or expired token";
+        response.setBody(respBody.dump());
         return response;
     }
+
+    // 获取查询参数
+    std::unordered_map<std::string, std::string> params = request.getQueryParameters();
     
     // 构建文件路径
     std::string basePath = "/home/loki/桌面/HttpStaticFiles";

@@ -32,3 +32,12 @@ void createDirectory(const std::string& dirPath);
 // 用户输入处理函数
 void getFileInput(std::string& input, const std::string& prompt);
 void getUserInput(std::string& username, std::string& password);
+
+// 业务流程封装函数
+class HandlerFactory;
+
+void ProcessGetStatic(HandlerFactory& factory);
+void ProcessLogin(HandlerFactory& factory);
+void ProcessRegister(HandlerFactory& factory);
+void ProcessDownloadFile(HandlerFactory& factory);
+void ProcessUploadFile(HandlerFactory& factory);

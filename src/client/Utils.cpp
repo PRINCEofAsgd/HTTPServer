@@ -1,8 +1,11 @@
 // 客户端工具函数实现
 #include "../../include/client/Utils.h"
+#include "../../include/client/HandlerFactory.h"
+#include "../../include/http/HttpRequest.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+#include <fcntl.h>
 #include <string.h>
 #include <unistd.h>
 #include <iostream>
@@ -68,4 +71,162 @@ void getUserInput(std::string& username, std::string& password) {
         std::cout << "密码不能为空，请重新输入: ";
         std::getline(std::cin, password);
     }
+}
+
+// 业务流程封装函数实现
+void ProcessGetStatic(HandlerFactory& factory) {
+    HttpRequest request;
+    std::string fileName;
+    getFileInput(fileName, "请输入静态文件名");
+    
+    // 自增请求ID
+    requestId_++;
+    
+    // 构造获取静态资源请求
+    request.setMethod("GET");
+    request.setPath("/");
+    if (!fileName.empty()) request.addQueryParameter("filename", fileName);
+    request.setVersion("HTTP/1.1");
+    request.addHeader("Host", SERVER_IP + ":" + SERVER_PORT);
+    request.addHeader("Connection", "keep-alive");
+    request.addHeader("X-Request-ID", std::to_string(requestId_));
+    
+    // 注册路由
+    factory.RegisterRouter(requestId_, ReqType::GET_STATIC);
+    
+    // 使用 ClientConn 发送请求
+    factory.handleRequest(request);
+}
+
+void ProcessLogin(HandlerFactory& factory) {
+    HttpRequest request;
+    std::string username, password;
+    getUserInput(username, password); // 获取登录信息
+    
+    // 自增请求ID
+    requestId_++;
+    
+    // 构造登录请求
+    request.setMethod("POST");
+    request.setPath("/login");
+    request.setVersion("HTTP/1.1");
+    request.addHeader("Host", SERVER_IP + ":" + SERVER_PORT);
+    request.addHeader("Connection", "keep-alive");
+    request.addHeader("Content-Type", "application/json");
+    request.addHeader("X-Request-ID", std::to_string(requestId_));
+    std::string jsonBody = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
+    request.addHeader("Content-Length", std::to_string(jsonBody.size()));
+    request.setBody(jsonBody);
+    
+    // 注册路由
+    factory.RegisterRouter(requestId_, ReqType::LOGIN);
+    
+    // 使用 ClientConn 发送请求
+    factory.handleRequest(request);
+}
+
+void ProcessRegister(HandlerFactory& factory) {
+    HttpRequest request;
+    std::string username, password;
+    getUserInput(username, password); // 获取注册信息
+    
+    // 自增请求ID
+    requestId_++;
+    
+    // 构造注册请求
+    request.setMethod("POST");
+    request.setPath("/register");
+    request.setVersion("HTTP/1.1");
+    request.addHeader("Host", SERVER_IP + ":" + SERVER_PORT);
+    request.addHeader("Connection", "keep-alive");
+    request.addHeader("Content-Type", "application/json");
+    request.addHeader("X-Request-ID", std::to_string(requestId_));
+    std::string jsonBody = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
+    request.addHeader("Content-Length", std::to_string(jsonBody.size()));
+    request.setBody(jsonBody);
+    
+    // 注册路由
+    factory.RegisterRouter(requestId_, ReqType::REGISTER);
+    
+    // 使用 ClientConn 发送请求
+    factory.handleRequest(request);
+}
+
+void ProcessDownloadFile(HandlerFactory& factory) {
+    HttpRequest request;
+    std::string fileName;
+    getFileInput(fileName, "请输入要下载的文件名");
+    
+    // 自增请求ID
+    requestId_++;
+    
+    // 构造下载个人文件请求
+    request.setMethod("GET");
+    request.setPath("/download");
+    if (!fileName.empty()) request.addQueryParameter("filename", fileName);
+    request.setVersion("HTTP/1.1");
+    request.addHeader("Host", SERVER_IP + ":" + SERVER_PORT);
+    request.addHeader("Connection", "keep-alive");
+    request.addHeader("X-Request-ID", std::to_string(requestId_));
+    if (!token.empty()) request.addHeader("Authorization", "Bearer " + token);
+    
+    // 注册路由
+    factory.RegisterRouter(requestId_, ReqType::DOWNLOAD_FILE);
+    
+    // 使用 ClientConn 发送请求
+    factory.handleRequest(request);
+}
+
+void ProcessUploadFile(HandlerFactory& factory) {
+    HttpRequest request;
+    std::string fileName;
+    getFileInput(fileName, "请输入待上传的文件路径");
+    
+    // 打开文件
+    int file_fd = open(fileName.c_str(), O_RDONLY);
+    if (file_fd < 0) {
+        printf("错误: 无法打开文件 %s\n", fileName.c_str());
+        return;
+    }
+    
+    // 获取文件大小
+    struct stat file_stat;
+    if (stat(fileName.c_str(), &file_stat) < 0) {
+        printf("错误: 无法获取文件信息 %s\n", fileName.c_str());
+        close(file_fd);
+        return;
+    }
+    size_t file_size = file_stat.st_size;
+    
+    // 提取文件名
+    size_t slashPos = fileName.find_last_of('/');
+    std::string uploadFileName = fileName;
+    if (slashPos != std::string::npos) uploadFileName = fileName.substr(slashPos + 1);
+    
+    // 自增请求ID
+    requestId_++;
+    
+    // 构造上传文件请求
+    request.setMethod("POST");
+    request.setPath("/upload");
+    request.setVersion("HTTP/1.1");
+    request.addHeader("Host", SERVER_IP + ":" + SERVER_PORT);
+    request.addHeader("Connection", "keep-alive");
+    request.addHeader("Content-Type", "application/octet-stream");
+    request.addHeader("Content-Length", std::to_string(file_size));
+    request.addHeader("X-Filename", uploadFileName);
+    request.addHeader("X-Request-ID", std::to_string(requestId_));
+    if (!token.empty()) request.addHeader("Authorization", "Bearer " + token);
+    
+    // 显式设置文件相关参数
+    request.setUseSendfile(true);
+    request.setFileFd(file_fd);
+    request.setFileOffset(0);
+    request.setFileSize(file_size);
+    
+    // 注册路由
+    factory.RegisterRouter(requestId_, ReqType::UPLOAD_FILE);
+    
+    // 使用 ClientConn 发送请求
+    factory.handleRequest(request);
 }

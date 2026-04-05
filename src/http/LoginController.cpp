@@ -20,8 +20,10 @@ HttpResponse LoginController::handleLogin(const HttpRequest& request) {
         
         // 验证用户信息
         if (userManager_->verifyUser(username, password)) { // 用户密码正确，响应返回 Token
-            // 生成Token并保存到Redis
-            std::string token = tokenManager_->generateToken(username);
+            // 先检查是否存在该用户名的token
+            std::string token;
+            if (!tokenManager_->verifyUsername(username, token)) // 如果存在，获取原 token
+                token = tokenManager_->generateToken(username);  // 如果不存在，生成新 token
 
             HttpResponse response(200);
             response.addHeader("Content-Type", "application/json");

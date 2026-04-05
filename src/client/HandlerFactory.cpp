@@ -13,34 +13,35 @@
 
 HandlerFactory::HandlerFactory() : 
 client_loop_(std::make_unique<ClientLoop>(HEARTBEAT_INTERVAL)), client_conn_(std::make_shared<ClientConn>(client_loop_.get())),
-context_(std::make_unique<HttpContext>(false)), router_(std::make_unique<HandlerRouter>()), 
+context_(std::make_unique<HttpContext>(false)), router_(std::make_unique<HandlerRouter>()), threadpool_(std::make_unique<ThreadPool>(1, "COMP")),
 jsonHandler_(std::make_unique<JsonHandler>()), fileHandler_(std::make_unique<FileHandler>()), heartBeatHandler_(std::make_unique<HeartBeatHandler>()) {
     // 初始化连接和循环
     client_conn_->set_on_response([this](const std::string& message) { handleResponse(message); });
     client_loop_->handle_newconn(client_conn_);
     client_loop_->set_register_callback([this](int requestId, ReqType reqType) { RegisterRouter(requestId, reqType); });
     loop_thread_ = std::thread([this]() { client_loop_->run(); });
-    // handler_thread_ = std::thread([this]() { router_->run(); }); // 启动路由线程，将来实现 IO 和业务分离
 }
 
 HandlerFactory::~HandlerFactory() {
     client_loop_->stop();
     if (loop_thread_.joinable()) loop_thread_.join();
+    if (threadpool_) threadpool_->stop();
 }
 
 // 处理HTTP响应
 bool HandlerFactory::handleResponse(const std::string& message) {
-    // 解析响应
-    Buffer temp_buffer(2); // 使用HTTP分隔符
-    temp_buffer.append(message.data(), message.size());
-    
-    if (context_->parse(temp_buffer)) { // 解析响应成功
-        const HttpResponse& response = context_->getResponse();
-        router_->handleResponse(response); // 调用HandlerRouter处理响应
-        context_->reset(); // 重置上下文，准备处理下一个响应
-        return true;
-    }
-    return false;
+    // 创建任务并提交到线程池异步处理
+    threadpool_->addtask([this, message]() {
+        auto local_context = std::make_unique<HttpContext>(false);
+        Buffer temp_buffer(2); // 使用 HTTP 分隔符
+        temp_buffer.append(message.data(), message.size());
+        
+        if (local_context->parse(temp_buffer)) {  // 解析响应成功
+            const HttpResponse& response = local_context->getResponse();
+            router_->handleResponse(response);      // 调用 HandlerRouter 处理响应
+        }
+    });
+    return true;
 }
 
 void HandlerFactory::handleRequest(const HttpRequest& request) { client_conn_->send_request(request); }
@@ -50,7 +51,7 @@ void HandlerFactory::RegisterRouter(int requestId, ReqType reqType) {
     RequestContext context;
     context.reqType = reqType;
     
-    // 根据ReqType设置回调函数
+    // 根据 ReqType 设置 HandlerRouter 的回调函数
     switch (reqType) {
         case ReqType::HEARTBEAT:
             context.callback = [this](const HttpResponse& response) { heartBeatHandler_->handle(response); };

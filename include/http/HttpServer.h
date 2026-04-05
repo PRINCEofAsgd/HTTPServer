@@ -11,21 +11,25 @@
 #include "LoginController.h"
 #include "AuthorMiddleWare.h"
 #include "../redis/RedisClient.h"
+#include "../mysql/MySQLClient.h"
 
 class HttpServer {
 private:
     TcpServer* tcpserver_;
     ThreadPool threadpool_;
-    HttpRouter router_;
-    StaticFileController staticFileController_;
-    DownloadController downloadController_;
-    UploadController uploadController_;
-    UserManager* userManager_;
-    RegisterController* registerController_;
+
     RedisClient* redisClient_;
+    MySQLClient* mysqlClient_;
     TokenManager* tokenManager_;
-    LoginController* loginController_;
+    UserManager* userManager_;
     AuthorMiddleWare* authorMiddleWare_;
+    
+    HttpRouter router_;
+    RegisterController* registerController_;
+    LoginController* loginController_;
+    StaticFileController staticFileController_;
+    DownloadController* downloadController_;
+    UploadController* uploadController_;
 
 public:
     HttpServer(TcpServer* tcpserver, int threadnum_comp = 5);

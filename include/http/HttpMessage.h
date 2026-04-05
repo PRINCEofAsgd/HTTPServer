@@ -31,6 +31,7 @@ public:
     std::string getFilenameHeader() const;
     std::string getContentType() const;
     std::string getContentDisposition() const;
+    std::string getXRequestId() const;
     
     // 文件传输相关 Getter 方法
     bool useSendfile() const;

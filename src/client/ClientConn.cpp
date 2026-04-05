@@ -89,7 +89,7 @@ void ClientConn::recv_message() {
                 std::shared_ptr<std::string> message = std::make_shared<std::string>();
                 // 尝试从缓冲区中获取单个消息
                 if (!buffer_.getmessage(message)) break; // 没有完整的消息，退出循环
-                // 直接回调HandlerFactory处理响应
+                // 直接回调 HandlerFactory 处理响应
                 if (on_response_) on_response_(*message);
             }
         }

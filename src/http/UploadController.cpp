@@ -1,12 +1,25 @@
 #include "../../include/http/UploadController.h"
 #include <fstream>
 #include <sys/stat.h>
+#include "../../third_party/nlohmann/json.hpp"
 
-UploadController::UploadController() {}
+using json = nlohmann::json;
 
+UploadController::UploadController(AuthorMiddleWare* authorMiddleWare) : authorMiddleWare_(authorMiddleWare) {}
 UploadController::~UploadController() {}
 
-HttpResponse UploadController::handleFileUpload(const HttpRequest& request, const std::string& username) {
+HttpResponse UploadController::handleFileUpload(const HttpRequest& request) {
+    // 验证Token并获取用户名
+    std::string username;
+    if (!authorMiddleWare_->verifyToken(request, username)) {
+        HttpResponse response(401);
+        response.addHeader("Content-Type", "application/json");
+        json respBody;
+        respBody["message"] = "Invalid or expired token";
+        response.setBody(respBody.dump());
+        return response;
+    }
+
     // 确定文件存储路径
     std::string basePath = "/home/loki/桌面/HttpStaticFiles";
     std::string uploadPath;

@@ -3,6 +3,7 @@
 
 #include "../http/HttpResponse.h"
 #include "../core/Buffer.h"
+#include <mutex>
 #include <string>
 #include <functional>
 #include <unordered_map>
@@ -30,19 +31,20 @@ enum class ReqType {
 // 请求上下文结构体
 struct RequestContext {
     ReqType reqType;                                    // 请求的业务类型
-    std::function<void(const HttpResponse&)> callback;   // 回调函数
+    std::function<void(const HttpResponse&)> callback;  // 回调函数
 };
 
 // 处理器路由类
 class HandlerRouter {
 private:
-    std::unordered_map<int, RequestContext> routeMap; // 基于 X-Request-ID 的路由映射表
+    std::unordered_map<int, RequestContext> routeMap;           // 基于 X-Request-ID 的路由映射表
+    std::mutex routeMapMutex;                                   // 保护routeMap的互斥锁
     void printResponseMetadata(const HttpResponse& response);   // 输出响应报文元数据信息
     
 public:
     HandlerRouter();
     ~HandlerRouter();
     
-    void RegisterRouter(int requestId, const RequestContext& context); // 注册基于请求 ID 的路由
-    void handleResponse(const HttpResponse& response);          // 处理响应
+    void RegisterRouter(int requestId, const RequestContext& context);  // 注册基于请求 ID 的路由
+    void handleResponse(const HttpResponse& response);                  // 处理响应
 };
