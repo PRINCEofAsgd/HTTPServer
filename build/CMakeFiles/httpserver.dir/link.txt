@@ -1,1 +1,0 @@
-/usr/bin/c++  -Wall CMakeFiles/httpserver.dir/src/main_http.cpp.o -o ../bin/httpserver  libhttpserver_lib.a -lpthread -lhiredis -lmysqlclient 
