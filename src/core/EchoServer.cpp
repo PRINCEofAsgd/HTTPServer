@@ -40,7 +40,7 @@ void EchoServer::handle_recv(spConnection conn, std::shared_ptr<std::string> mes
     // 任务加入 comp 线程后，随着 IO 线程继续进行，message 可能修改或释放，故使用 mutable 关键字值传递 message
 }
 void EchoServer::handle_send(spConnection conn) {
-    // printf("send message(fd = %d) success in IO thread %ld.\n\n", conn->get_fd(), syscall(SYS_gettid));
+    //printf("send message(fd = %d) success in IO thread %ld.\n\n", conn->get_fd(), syscall(SYS_gettid));
 }
 void EchoServer::handle_eptimeout(EventLoop* loop) {
     printf("epoll_wait() out of time %d seconds in IO thread %ld.\n", loop->get_timeout() / 1000, syscall(SYS_gettid));

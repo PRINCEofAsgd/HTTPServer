@@ -21,6 +21,7 @@ private:
     Buffer inputbuffer_;                    // 输入缓冲区
     Buffer outputbuffer_;                   // 输出缓冲区
     size_t max_buffer_size_;                // 输入输出缓冲区的最大容量，防止海量数据堆积导致内存占满
+    bool buffer_full_;                      // 缓冲区已满的状态
     std::atomic_bool disconnect_;           // 对端连接是否已断开的标志位，断开则设置为true，防止其他线程继续处理断开连接的通讯事件
     uint16_t sep_;                          // 分隔符类型标识
 
@@ -40,6 +41,9 @@ private:
 public:
     Connection(EventLoop* loop, std::unique_ptr<Socket> cltsock, uint16_t sep = 0, size_t max_buffer_size = 4 * 1024 * 1024, int max_requests = 100);   // 使用接收到的套接字创建处理器，并加入循环进行监听
     ~Connection();
+
+    // 初始化连接，为处理器设置回调函数，注册事件，这一步要用到 weak_ptr，不能在构造函数中初始化
+    void establish();
 
     // 返回 cltsock_ 的成员。虽然这里不再写类自己的返回方法而是调用 cltsock_ 的接口，可以降低耦合，但是在高并发场景中，解引用耗时严重，故牺牲轻度耦合来换取时间。
     int get_fd() const;

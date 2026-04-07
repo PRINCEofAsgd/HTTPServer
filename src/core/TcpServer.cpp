@@ -34,33 +34,34 @@ void TcpServer::stop() {
 
 void TcpServer::handle_newconn(std::unique_ptr<Socket> cltsock) {
     spConnection conn = std::make_shared<Connection>(subloops_[cltsock->get_fd() % threadnum_].get(), std::move(cltsock), sep_, 4 * 1024 * 1024, max_requests_); 
+    conn->establish();
     conn->set_closeconncallback([this](spConnection c) { this->handle_closeconn(c); });
     conn->set_errorconncallback([this](spConnection c) { this->handle_errorconn(c); });
     conn->set_recvcallback([this](spConnection c, std::shared_ptr<std::string> msg) { this->handle_recvmessage(c, msg); });
     conn->set_sendcallback([this](spConnection c) { this->handle_sendmessage(c); });
     
-    {   // 主线程
-        std::lock_guard<std::mutex> lock(conn_mutex);               // TcpServer 对象图中 conn 可能由主线程、IO 线程多个线程争抢修改，需要加锁保护
+    { // 主线程
+        std::lock_guard<std::mutex> lock(conn_mutex); // TcpServer 对象图中 conn 可能由主线程、IO 线程多个线程争抢修改，需要加锁保护
         conns_[conn->get_fd()] = conn;
     }
-    subloops_[conn->get_fd() % threadnum_]->handle_newconn(conn);   // EventLoop 对象图中 conn 的保护由其自己的函数加锁
+    subloops_[conn->get_fd() % threadnum_]->handle_newconn(conn); // EventLoop 对象图中 conn 的保护由其自己的函数加锁
     if (newconn_callback_) newconn_callback_(conn);
 }
 
-void TcpServer::handle_closeconn(spConnection conn) {   // 主线程
+void TcpServer::handle_closeconn(spConnection conn) { // 主线程
     if (closeconn_callback_) closeconn_callback_(conn);
     std::lock_guard<std::mutex> lock(conn_mutex);
     conns_.erase(conn->get_fd()); 
 }
 
-void TcpServer::handle_errorconn(spConnection conn) {   // 主线程
+void TcpServer::handle_errorconn(spConnection conn) { // 主线程
     if (errorconn_callback_) errorconn_callback_(conn);
     std::lock_guard<std::mutex> lock(conn_mutex);
     conns_.erase(conn->get_fd()); 
 }
 
-void TcpServer::handle_removeconn(spConnection conn) {  // IO 线程
-    if (conns_.find(conn->get_fd()) == conns_.end()) return;    // EventLoop 定时监测监听可能超时，若 conn 已主动关闭则返回
+void TcpServer::handle_removeconn(spConnection conn) { // IO 线程
+    if (conns_.find(conn->get_fd()) == conns_.end()) return; // EventLoop 定时监测监听可能超时，若 conn 已主动关闭则返回
     if (removeconn_callback_) removeconn_callback_(conn);
     std::lock_guard<std::mutex> lock(conn_mutex);
     conns_.erase(conn->get_fd());

@@ -12,9 +12,23 @@
 #include <time.h>
 #include <thread>
 #include <chrono>
+#include <signal.h>
 #include "../include/core/Buffer.h"
 
 using namespace std;
+
+int sockfd = -1;
+time_t pre = time(0);
+int messagenum = 0;
+
+void stop(int sign) {
+    close(sockfd);
+    printf("exit with sign: %d\n", sign);
+    time_t now = time(0);
+    printf("间隔时间：%d\n", int(now - pre));
+    printf("共接收到 %d 条消息\n", messagenum);
+    exit(0);
+}
 
 int main(int argc, char *argv[])
 {
@@ -24,7 +38,9 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    int sockfd;
+    signal(SIGINT, stop);
+    signal(SIGTERM, stop);
+    
     struct sockaddr_in servaddr;
  
     if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) { 
@@ -51,12 +67,12 @@ int main(int argc, char *argv[])
     char buf[1024];
     size_t max_buffer_size = 64 * 1024 * 1024;
     printf("connect ok.\n");
-    time_t pre = time(0);
 
     // 创建发送缓冲区和接收缓冲区
     Buffer send_buffer(1);  // 使用分隔符类型1（4字节长度头部）
     Buffer recv_buffer(1);  // 使用分隔符类型1（4字节长度头部）
     int circlenum = atoi(argv[3]);
+    long send_count = 0;
 
     // 发送循环
     for (int ii = 0; ii < circlenum; ++ii) {
@@ -65,11 +81,13 @@ int main(int argc, char *argv[])
 
         // 使用发送缓冲区添加带分隔符的消息
         send_buffer.append_withsep(buf, strlen(buf));
+        send_count += strlen(buf);
 
         // 从发送缓冲区中发送数据
         while (send_buffer.size() > 0) {
             int send_len = send_buffer.putmessage(buf, sizeof(buf));
             int sent = send(sockfd, buf, send_len, 0);
+            send_count -= sent;
             if (sent < 0) {
                 if (errno == EINTR) continue;
                 if (errno == EAGAIN || errno == EWOULDBLOCK) break;
@@ -79,7 +97,6 @@ int main(int argc, char *argv[])
     }
 
     // 接收循环
-    int messagenum = 0;
     time_t last_activity_time = time(0);
     const int TIMEOUT_SECONDS = 20;  // 20秒超时
     

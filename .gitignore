@@ -1,0 +1,54 @@
+# 构建目录
+build/
+
+# 编译产物
+bin/
+
+# 缓存目录
+.cache/
+
+# 编辑器配置
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 编译生成的文件
+*.o
+*.d
+*.i
+*.s
+*.a
+*.so
+*.exe
+
+# 临时文件
+*.tmp
+*.temp
+
+# 日志文件
+*.log
+
+# CMake 生成的文件
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+Makefile2
+CMakeFiles/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 环境变量文件
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 数据库相关
+*.db
+*.sqlite
+*.sqlite3

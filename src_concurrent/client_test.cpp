@@ -18,9 +18,9 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    if (argc != 3) {
-        printf("usage:./client_concurrent ip port\n"); 
-        printf("example:./client_concurrent 192.168.1.101 4819\n"); 
+    if (argc != 4) {
+        printf("usage:./client_concurrent ip port message_count\n"); 
+        printf("example:./client_concurrent 192.168.1.101 4819 1000\n"); 
         return -1;
     }
 
@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     // 创建发送缓冲区和接收缓冲区
     // Buffer send_buffer(1);  // 使用分隔符类型1（4字节长度头部）
     // Buffer recv_buffer(1);  // 使用分隔符类型1（4字节长度头部）
-    int circlenum = 100000;
+    int circlenum = atoi(argv[3]);
     int messagenum = 0;
     time_t pre = time(0);
 
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
             close(sockfd); 
             return -1;
         }
-        // printf("recv:%s\n", buf);
+        printf("recv:%s\n", buf);
 
         ++messagenum;
 

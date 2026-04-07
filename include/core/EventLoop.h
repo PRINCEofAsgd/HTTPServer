@@ -19,7 +19,7 @@ private:
     std::atomic_bool stop_;                                 // 控制循环是否进行的标志位
 
     int threadid_;                                          // 事件循环所在线程的 id
-    // 任务队列，使用优先级队列，支持不同优先级的任务
+    // 任务队列
     std::queue<std::function<void()>> taskqueue_;           // 业务层传来的发送消息任务队列
     int wakeup_fd_;                                         // 监听发送消息任务队列是否有读事件的 fd 
     std::unique_ptr<Channel> wakeup_channel_;               // 发送消息 fd 的事件分发器

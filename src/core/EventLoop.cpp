@@ -125,7 +125,7 @@ void EventLoop::handle_timeout() {
                 std::lock_guard<std::mutex> lock(conn_mutex_);
                 it = conns_.erase(it);  // erase() 返回值为被删除元素后的下一个迭代器，如果删除则原地遍历下一个
             }
-            else ++it;                  // 如果不删除则正常遍历下一个
+            else ++it; // 如果不删除则正常遍历下一个
         }
     }
 }
